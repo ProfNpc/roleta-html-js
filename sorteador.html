@@ -46,7 +46,7 @@
 		}
 		
 		function raioCirculo(circuloBorda, angulo) {
-			console.log('angulo=' + angulo);
+			//console.log('angulo=' + angulo);
 			const canvas = document.getElementById("myCanvas");
 			const ctx = canvas.getContext("2d");		
 			ctx.beginPath();
@@ -118,7 +118,7 @@
 
 
 		var numeroPalavras = 8;
-		var velocidade = 10;
+		var velocidade = 1000;
 		var meiaFatiaDeVelocidade = (360/numeroPalavras)/2;
 		var voltas = 0;
 		
@@ -225,21 +225,35 @@
 			var txtVelocidade = document.getElementById("txtVelocidade");
 			velocidade = txtVelocidade.value;
 			
-			girar(velocidade);
+			var faixa = Math.floor(10000/limiteIntervalo);
+			
+			
+			
+			girar(Math.floor(velocidade/faixa));
 
 		}
 		
+		/*
+		velocidade : intervalo de 0 a 12
+		*/
+		
+		var metadeIntervalo = 7;
+		var limiteIntervalo = 15;
+		
 		function girar(velocidade) {
+			
+			console.log("girar(" + velocidade + ")");
+		
 			if (velocidade > 0) {
 			
-				if (velocidade - 5 > 0) {
-					for(var i = 0; i < velocidade - 4;i++) {
+				if (velocidade - metadeIntervalo > 0) {
+					for(var i = 0; i < velocidade - (metadeIntervalo - 1);i++) {
 						girarHorarioHumGrau();
 					}
 				} else {
 					if (aguardarTicks == 0) {
 						girarHorarioHumGrau();
-						aguardarTicks = 5 - velocidade;
+						aguardarTicks = metadeIntervalo - velocidade;
 					} else {
 						aguardarTicks--;
 					}
@@ -247,33 +261,153 @@
 			}			
 		}
 		
+		function telaSelecionada() {
+			console.log('telaSelecionada()');
+			
+			
+			var tela = document.querySelector('input[type = radio][name = tela]:checked').value;
+			
+			var painelVelocidadeConstante = document.getElementById('painelVelocidadeConstante');
+			
+			var painelPeteleco = document.getElementById('painelPeteleco');
+			
+			var chkGirar = document.getElementById('chkGirar');
+			chkGirar.checked = false;
+			botarParaGirarParar();
+			
+			console.log('telaSelecionada() => tela = ' + tela);
+			
+			if (tela == 1) {
+				painelVelocidadeConstante.hidden = false;
+				painelPeteleco.hidden = true;
+			} else {
+				painelVelocidadeConstante.hidden = true;
+				painelPeteleco.hidden = false;		
+			}
+		}
+		
+		var forcaPeteleco = 0;
+		var forcaPetelecoInicial = 0;
+		var atrito = 0;
+		
+		function botarParaGirarParar() {
+			var chkGirar = document.getElementById("chkGirar");
+			if (chkGirar.checked) {
+				myInterval = setInterval(girarVelocidade, 1);
+			} else {
+				clearInterval(myInterval);
+				myInterval = null;
+			}
+		}
+		
+		function darPeteleco() {
+			var txtForcaPeteleco = document.getElementById('txtForcaPeteleco');
+			
+			forcaPeteleco = parseInt(txtForcaPeteleco.value);
+			
+			forcaPetelecoInicial = forcaPeteleco;
+			
+			var txtAtrito = document.getElementById('txtAtrito');
+			
+			atrito = parseFloat(txtAtrito.value);
+			
+			if (forcaPeteleco > 0 && myInterval == null) {
+				myInterval = setInterval(girarPorPeteleco, 1);
+			} else {
+				clearInterval(myInterval);
+				myInterval = null;			
+			}
+			
+		}
+		
+		function girarPorPeteleco() {
+			velocidade = Math.ceil(forcaPeteleco/1000);
+			girar(velocidade);
+			
+			var reducaoAtrito = Math.ceil(forcaPeteleco * atrito);
+			if (reducaoAtrito == 0) {
+				forcaPeteleco = 0;
+			} else {
+				forcaPeteleco = forcaPeteleco - reducaoAtrito;
+			}
+			
+			var txtForcaPeteleco = document.getElementById('txtForcaPeteleco');
+			txtForcaPeteleco.value = forcaPeteleco;
+			
+			console.log('forcaPeteleco = ' + forcaPeteleco);
+			
+			if (forcaPeteleco <= 0) {
+				console.log('clearInterval(myInterval), forcaPeteleco');
+				clearInterval(myInterval);
+				myInterval = null;
+				txtForcaPeteleco.value = forcaPetelecoInicial;
+			}
+		}
+		
 	</script>
 	
 	<body>
 	
 		<h1>Sorteador</h1>
+		
+		
+		<div id="painelEntradaListaPalavras" hidden>
+			<textarea cols="50" rows="20">
+			</textarea>
+		</div>
+		
 		<p>Girando...</p>
-		
-		<textarea cols="50" rows="20">
-		</textarea>
-		
 		
 		<canvas id="myCanvas" width="500" height="500" border="1">
 		</canvas>
 		
-		<form id="form">
-			<input type="number" value="1" id="txtVelocidade" min="0" max="10" onclick="" />
+		<div id="painelSelecaoTela">
+
+		</div>
+		
+		
+		
+			<form id="formVelocidadeConstante">
+				<label>Tipo Movimento</label>
+				<br/>
+				<input type="radio" name="tela" value="1" onclick="telaSelecionada()" selected />Velocidade Constante
+				<br/>
+				<input type="radio" name="tela" value="2" onclick="telaSelecionada()"/>Peteleco
+				<br/>
 			
-			<input type="text" value="" id="txtAnguloBase" disabled="disabled" readonly="readonly"/>
-			<input type="button" value="<" onclick="girarAntiHorarioHumGrau()"/>
-			<input type="button" value=">" onclick="girarHorarioHumGrau()"/>
-			<br/>
-			Girar: <input type="checkbox" id="chkGirar" onclick="botarParaGirarParar()"/>
-		</form>
+				<div id="painelVelocidadeConstante">
+					<label for="txtVelocidade">Velocidade</label>
+					<br/>
+					<input type="number" value="1000" id="txtVelocidade" min="0" max="10" step="1" onclick="" />
+					<input type="button" value="<" onclick="girarAntiHorarioHumGrau()"/>
+					<input type="button" value=">" onclick="girarHorarioHumGrau()"/>
+					<br/>
+					Girar: <input type="checkbox" id="chkGirar" onclick="botarParaGirarParar()"/>
+				</div>
+				
+				<div id="painelPeteleco">
+					<label for="txtForcaPeteleco">Força peteleco</label>
+					<br/>
+					<input type="number" value="10000" id="txtForcaPeteleco" min="0" max="10000" step="1000" onclick="" />
+					<br/>
+					<label for="txtAtrito">Atrito</label>
+					<br/>
+					<input type="number" value=".001" id="txtAtrito" min="0" max="1" step=".01" onclick="" />
+					<br/>
+					<input type="button" value="Peteleco!" onclick="darPeteleco()"/>
+				</div>
+				
+				<label for="txtAnguloBase">Angulo Base</label>
+				<br/>
+				<input type="text" value="" id="txtAnguloBase" disabled="disabled" readonly="readonly"/>
+
+			</form>
+		
+		</div>
 
 		<script>
 		
-			numeroPalavras = 4;
+			numeroPalavras = 11;
 		
 			for (var palavra = 0; palavra < numeroPalavras; palavra++) {
 				array[palavra] = palavra + 1;
