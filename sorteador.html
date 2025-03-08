@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Sorteador</title>
+	</head>
+	
+	<script>
+		
+
+	
+		function borda(circuloBorda) {
+			const startAngle = 0;
+			const endAngle = 2 * Math.PI; //volta completa
+			const canvas = document.getElementById("myCanvas");
+			const ctx = canvas.getContext("2d");
+			ctx.beginPath();
+			ctx.arc(circuloBorda.x, circuloBorda.y, circuloBorda.raio, 0, 2 * Math.PI);
+			ctx.stroke();
+		}
+		
+		function rotate(cx, cy, x, y, angle) {
+			var radians = (Math.PI / 180) * angle,
+				cos = Math.cos(radians),
+				sin = Math.sin(radians),
+				nx = (cos * (x - cx)) + (sin * (y - cy)) + cx,
+				ny = (cos * (y - cy)) - (sin * (x - cx)) + cy;
+			return [nx, ny];
+		}
+		
+		function numeroFatia(circuloBorda, angulo, numero) {
+			const canvas = document.getElementById("myCanvas");
+			const ctx = canvas.getContext("2d");		
+			ctx.beginPath();
+			ctx.font = circuloBorda.raio * 0.15 + "px arial";
+			ctx.textBaseline="middle";
+			ctx.textAlign="center";
+			
+			var length = circuloBorda.raio - 15;
+			
+			var x = circuloBorda.x;
+			var y = circuloBorda.y + length;
+			
+			var coordenadasRotacionadas = rotate(circuloBorda.x, circuloBorda.y, x, y, angulo);
+			
+			ctx.fillText(numero + "", coordenadasRotacionadas[0], coordenadasRotacionadas[1]);
+		}
+		
+		function raioCirculo(circuloBorda, angulo) {
+			console.log('angulo=' + angulo);
+			const canvas = document.getElementById("myCanvas");
+			const ctx = canvas.getContext("2d");		
+			ctx.beginPath();
+			
+			var length = circuloBorda.raio;
+			
+			ctx.moveTo(circuloBorda.x, circuloBorda.y);
+			//ctx.lineTo(circuloBorda.x + length * Math.cos(angulo), circuloBorda.y + length * Math.sin(angulo));
+			
+			var x = circuloBorda.x;
+			var y = circuloBorda.y + length;
+			
+			var coordenadasRotacionadas = rotate(circuloBorda.x, circuloBorda.y, x, y, angulo);
+			
+			ctx.lineTo(coordenadasRotacionadas[0], coordenadasRotacionadas[1]);
+			
+			//ctx.lineTo(circuloBorda.x - length * Math.cos(angulo), circuloBorda.y + length * Math.sin(angulo));
+			
+			ctx.stroke();
+		}
+		
+		function roleta(circuloBorda, numFatias, anguloBase) {
+			borda(circuloBorda);
+			
+			var anguloFatiaPizza = 360.0 / numFatias;
+			
+			console.log('anguloFatiaPizza=' + anguloFatiaPizza);
+			
+			var angulo = 0;
+			
+
+			/*
+			raioCirculo(circuloBorda, 120);
+			
+			raioCirculo(circuloBorda, 240);
+			
+			raioCirculo(circuloBorda, 0);
+			*/
+
+			
+			for (var fatia = 0; fatia < numFatias; fatia++) {
+
+				angulo += anguloFatiaPizza;
+			
+				raioCirculo(circuloBorda, anguloBase + angulo);
+				
+				numeroFatia(circuloBorda, anguloBase + angulo + (anguloFatiaPizza/2), array[fatia]);
+				
+			}
+		
+		}
+		
+		function shuffle(array) {
+			let currentIndex = array.length;
+
+			// While there remain elements to shuffle...
+			while (currentIndex != 0) {
+
+			// Pick a remaining element...
+			let randomIndex = Math.floor(Math.random() * currentIndex);
+			currentIndex--;
+
+			// And swap it with the current element.
+			[array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+			}
+		}
+		
+
+
+
+		var numeroPalavras = 8;
+		var velocidade = 10;
+		var meiaFatiaDeVelocidade = (360/numeroPalavras)/2;
+		var voltas = 0;
+		
+		var anguloBase = 0;//(360/numeroPalavras)/2;
+		var anguloBaseInicial = null;		
+		
+		var array = [];
+
+		function desenharRoleta() {
+			var circuloBorda = {
+				x: 250.0,
+				y: 250.0,
+				raio: 200.0
+			};
+			
+			const canvas = document.getElementById("myCanvas");
+			const ctx = canvas.getContext('2d');
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+			roleta(circuloBorda, numeroPalavras, anguloBase);
+			
+			console.log('velocidade=' + velocidade);
+			
+			var txtAnguloBase = document.getElementById("txtAnguloBase");
+			txtAnguloBase.value = anguloBase;
+			
+		}
+		
+		function desenharRoletaOld() {
+			var circuloBorda = {
+				x: 250.0,
+				y: 250.0,
+				raio: 200.0
+			};
+			
+			const canvas = document.getElementById("myCanvas");
+			const ctx = canvas.getContext('2d');
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+			roleta(circuloBorda, numeroPalavras, anguloBase);
+			
+			console.log('velocidade=' + velocidade);
+			
+			/*
+			if (anguloBaseInicial != null) {
+				if (anguloBase <= anguloBaseInicial) {
+					if (velocidade <= 0) {
+						velocidade = 0;
+					} else {
+						velocidade--;
+					}
+				}
+			}
+			
+			
+			anguloBase = (anguloBase + velocidade) % 360;//girando
+			*/
+			voltas--;
+			//if (anguloBase <= anguloBaseInicial) {
+			if (voltas <= 0) {
+				meiaFatiaDeVelocidade = 0;
+				var indice = Math.floor(array.length/2);
+				console.log('indice:' + indice);
+				alert(array[indice]);
+			}
+			
+			
+			anguloBase = (anguloBase + meiaFatiaDeVelocidade) % 360;
+			
+			if (anguloBaseInicial == null) {
+				anguloBaseInicial = anguloBase;
+			}
+
+
+		}
+		
+		function girarAntiHorarioHumGrau() {
+			anguloBase = (anguloBase + 1) % 360;
+			desenharRoleta();
+		}
+		
+		function girarHorarioHumGrau() {
+			anguloBase = anguloBase - 1;
+			if (anguloBase == -1) {
+				anguloBase = 359;
+			}
+			desenharRoleta();
+		}
+		
+		var myInterval = null;
+		
+		function botarParaGirarParar() {
+			var chkGirar = document.getElementById("chkGirar");
+			if (chkGirar.checked) {
+				myInterval = setInterval(girarVelocidade, 1);
+			} else {
+				clearInterval(myInterval);
+			}
+		}
+		
+		var aguardarTicks = 0;
+		
+		function girarVelocidade() {
+			var txtVelocidade = document.getElementById("txtVelocidade");
+			velocidade = txtVelocidade.value;
+			
+			girar(velocidade);
+
+		}
+		
+		function girar(velocidade) {
+			if (velocidade > 0) {
+			
+				if (velocidade - 5 > 0) {
+					for(var i = 0; i < velocidade - 4;i++) {
+						girarHorarioHumGrau();
+					}
+				} else {
+					if (aguardarTicks == 0) {
+						girarHorarioHumGrau();
+						aguardarTicks = 5 - velocidade;
+					} else {
+						aguardarTicks--;
+					}
+				}
+			}			
+		}
+		
+	</script>
+	
+	<body>
+	
+		<h1>Sorteador</h1>
+		<p>Girando...</p>
+		
+		<textarea cols="50" rows="20">
+		</textarea>
+		
+		
+		<canvas id="myCanvas" width="500" height="500" border="1">
+		</canvas>
+		
+		<form id="form">
+			<input type="number" value="1" id="txtVelocidade" min="0" max="10" onclick="" />
+			
+			<input type="text" value="" id="txtAnguloBase" disabled="disabled" readonly="readonly"/>
+			<input type="button" value="<" onclick="girarAntiHorarioHumGrau()"/>
+			<input type="button" value=">" onclick="girarHorarioHumGrau()"/>
+			<br/>
+			Girar: <input type="checkbox" id="chkGirar" onclick="botarParaGirarParar()"/>
+		</form>
+
+		<script>
+		
+			numeroPalavras = 4;
+		
+			for (var palavra = 0; palavra < numeroPalavras; palavra++) {
+				array[palavra] = palavra + 1;
+			}
+			
+			shuffle(array);		
+		
+			//Se numero de palavras for par, voltas deve ser ímpar
+			//Se numero de palavras for ímpar, voltas deve ser par
+			voltas = (360 % numeroPalavras) + 11;
+			
+			desenharRoleta();
+		
+			//setInterval(desenharRoleta, 300);
+			/*
+			
+			6 numeros -> angulo base = 30
+			
+			
+			var circuloBorda = {
+				x: 250.0,
+				y: 250.0,
+				raio: 200.0
+			};
+
+
+			roleta(circuloBorda, 5, 90);
+			*/
+			/*
+			borda(circuloBorda);
+			
+			var numeroPalavras = 25;
+			
+			var anguloFatiaPizza = 360.0 / numeroPalavras;
+			
+			console.log('anguloFatiaPizza=' + anguloFatiaPizza);
+			
+			var angulo = 0;
+			
+			
+			for (var numPalavra = 0; numPalavra < numeroPalavras; numPalavra++) {
+
+				angulo += anguloFatiaPizza;
+			
+				raioCirculo(circuloBorda, angulo);
+				
+			}
+			*/
+			
+		
+
+		</script>
+
+	</body>
+</html>
