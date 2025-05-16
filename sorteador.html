@@ -33,15 +33,26 @@
 			return [nx, ny];
 		}
 		
-		function numeroFatia(circuloBorda, angulo, numero) {
+		function numeroFatia(circuloBorda, angulo, numero, numFatias) {
 			const canvas = document.getElementById("myCanvas");
 			const ctx = canvas.getContext("2d");		
 			ctx.beginPath();
-			ctx.font = circuloBorda.raio * 0.15 + "px arial";
+			//ctx.font = circuloBorda.raio * 0.15 + "px arial";
+			//numFatias => 50 então 15px
+			
+			var tamanhoFont = 750/numFatias * 0.7;
+			
+			if (numFatias == 2) {
+				tamanhoFont = 750/numFatias * 0.5;
+			}
+			
+			ctx.font = tamanhoFont + "px arial";
+			//ctx.font = "15px arial";
+			
 			ctx.textBaseline="middle";
 			ctx.textAlign="center";
 			
-			var length = circuloBorda.raio - 15;
+			var length = circuloBorda.raio - tamanhoFont/2;
 			
 			var x = circuloBorda.x;
 			var y = circuloBorda.y + length;
@@ -93,7 +104,7 @@
 
 				raioCirculo(circuloBorda, (anguloBase + 90) + angulo);
 				
-				numeroFatia(circuloBorda, (anguloBase + 90) + angulo + (anguloFatiaPizza/2), array[fatia]);
+				numeroFatia(circuloBorda, (anguloBase + 90) + angulo + (anguloFatiaPizza/2), array[fatia], numFatias);
 				
 				angulo += anguloFatiaPizza;				
 				
@@ -482,12 +493,34 @@
 				notas: []
 			};
 			
+			
+			//Musica 1
 			addNota(musica, "C#", 100);
 			addNota(musica, "D#", 100);
 			addNota(musica, "A", 100);
 			addNota(musica, "D#", 100);
 			addNota(musica, "C#", 100);
 			addNota(musica, "D#", 100);
+			
+			
+			/*
+			//Musica Alice
+			addNota(musica, "G#", 100);
+			addNota(musica, "A#", 100);
+			addNota(musica, "G", 100);
+			addNota(musica, "F", 100);
+			addNota(musica, "E", 100);
+			addNota(musica, "B", 100);
+			*/
+			/*
+			//Musica Alice - Variação 1
+			addNota(musica, "G#", 500);
+			addNota(musica, "A#", 100);
+			addNota(musica, "G", 100);
+			addNota(musica, "F", 500);
+			addNota(musica, "E", 100);
+			addNota(musica, "B", 100);
+			*/
 			
 			
 			tocarNotas(musica);
@@ -608,14 +641,14 @@
 			noteFreq[4]["C#"] = 277.182630976872096;
 			noteFreq[4]["D"] = 293.66476791740756;
 			noteFreq[4]["D#"] = 311.12698372208091;
-			noteFreq[4]["E"] = 329.627556912869929;
+			noteFreq[4]["E"] = 329.627556912869929; //Mi
 			noteFreq[4]["F"] = 349.228231433003884;
 			noteFreq[4]["F#"] = 369.994422711634398;
-			noteFreq[4]["G"] = 391.995435981749294;
+			noteFreq[4]["G"] = 391.995435981749294; //Sol
 			noteFreq[4]["G#"] = 415.304697579945138;
-			noteFreq[4]["A"] = 440.0;
+			noteFreq[4]["A"] = 440.0; //Lá
 			noteFreq[4]["A#"] = 466.163761518089916;
-			noteFreq[4]["B"] = 493.883301256124111;
+			noteFreq[4]["B"] = 493.883301256124111; //Si
 
 			noteFreq[5]["C"] = 523.251130601197269;
 			noteFreq[5]["C#"] = 554.365261953744192;
@@ -723,7 +756,7 @@
 
 		<script>
 		
-			numeroPalavras = 10;
+			numeroPalavras = 7;
 		
 			for (var palavra = 0; palavra < numeroPalavras; palavra++) {
 				array[palavra] = palavra + 1;
