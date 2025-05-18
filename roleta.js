@@ -476,6 +476,7 @@ function mostrarResultadoSorteio() {
 	
 	if (palavraSorteada != null) {
 		var texto = palavraSorteada.innerHTML;
+		texto = texto.split(' - ')[1];
 		var divMensagemPalavraSelecionada = document.getElementById("divMensagemPalavraSelecionada");
 		divMensagemPalavraSelecionada.innerHTML = texto;
 		exampleModal.show();	
