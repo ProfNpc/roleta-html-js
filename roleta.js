@@ -83,7 +83,7 @@ function roleta(circuloBorda, numFatias, anguloBase) {
 	desenharFatiaSelecionada(circuloBorda, -anguloBase, anguloFatiaPizza, numFatias - fatiaSelecionada);
 	
 	desenharMarcador(circuloBorda);
-	
+
 	marcarLinhaTabela(array[numFatias - (fatiaSelecionada + 1)]);	
 	
 	for (var fatia = 0; fatia < numFatias; fatia++) {
@@ -463,7 +463,25 @@ function girarPorPeteleco() {
 		myInterval = null;
 		txtForcaPeteleco.value = forcaPetelecoInicial;
 		continarMusica = false;
+		
+		mostrarResultadoSorteio();
 	}
+}
+
+function mostrarResultadoSorteio() {
+	console.log("mostrarResultadoSorteio()");
+	var exampleModal = new bootstrap.Modal(document.getElementById('exampleModal'), {});
+	
+	var palavraSorteada = document.getElementById(`lin${numeroSelecionado}`);
+	
+	if (palavraSorteada != null) {
+		var texto = palavraSorteada.innerHTML;
+		var divMensagemPalavraSelecionada = document.getElementById("divMensagemPalavraSelecionada");
+		divMensagemPalavraSelecionada.innerHTML = texto;
+		exampleModal.show();	
+	}
+	
+
 }
 
 const audioContext = new AudioContext();
@@ -544,21 +562,7 @@ async function tocarNotas(musica) {
 
 function tocarNota(nota) {
 	const osc = playTone(nota.freq);
-	
-	//var continuar = true;
-	/*
-	setInterval(function() {
-		//const osc = audioContext.createOscillator
-		continuar = false;
-		osc.stop();
-	}, nota.duracaoMili);
-	*/
-	
-	//while(continuar) {
-	//	await new Promise(r => setTimeout(r, nota.duracaoMili));
-	//}
 	return osc;
-	
 }
 
 function addNota(musica, nota, duracaoMili) {
@@ -728,21 +732,92 @@ var numeroSelecionado = null;
 
 function prepararTabelaDePalabras() {
 	
+	array = [];
+	
+	listaPalabras = [];
+	
+	numeroSelecionado = null;
+	
+	var myCanvas = document.getElementById('myCanvas');
+	const ctx = myCanvas.getContext('2d');	
+	myCanvas.style.display = 'none';
+	
 	var textAreaPalabras = document.getElementById('palabrasSorteadas');
 	
 	var listaPalabrasStr = removeBlankLines(textAreaPalabras.value.trim());
 	listaPalabras = listaPalabrasStr.split('\n');
 	
-	const tabelaPalabrasTBody = document.getElementById('tabelaPalabrasTBody');
 	
-	var numLinha = 1;
+	var numPalavra = 1;
+	
+	const listaPalabrasDiv = document.getElementById('listaPalabras');
+	
+	listaPalabrasDiv.innerHTML = '';
+	
+	var arrayDivPalabras = [];
+	
+	var arrayNumCaracteres = [];
+	var numCaracteresLinha = 55;
+	var listaLinhasTamPalavras = [];
+	
+	var linhaAtual = 1;
+	
+	listaLinhasTamPalavras[linhaAtual] = {
+		numLinha : linhaAtual,
+		listaTamPalavras : [],
+		somaTamanhos : 0
+	};
+	
+
 	
 	listaPalabras.forEach(function (palabra, index) {
-		const newRowVariable = document.createElement('tr');
-		newRowVariable.id = `lin${numLinha}`;
+		const newPalavra = document.createElement('div');
+		newPalavra.id = `lin${numPalavra}`;
+		newPalavra.classList.add('itemlista');
 		listaPalabras[index] = palabra.trim();
-		newRowVariable.innerHTML = `<td>${numLinha++}</td><td>${listaPalabras[index]}</td>`;
-		tabelaPalabrasTBody.append(newRowVariable);		
+		newPalavra.innerHTML = `${numPalavra++} - ${listaPalabras[index]}`;
+		
+		var numCaracteresPalavra = newPalavra.innerHTML.length;
+		
+		
+		if (listaLinhasTamPalavras[linhaAtual].somaTamanhos + numCaracteresPalavra >= numCaracteresLinha) {
+			linhaAtual++;
+			listaLinhasTamPalavras[linhaAtual] = {
+				numLinha : linhaAtual,
+				listaTamPalavras : [],
+				somaTamanhos : 0
+			};			
+		}
+		
+		listaLinhasTamPalavras[linhaAtual].somaTamanhos += numCaracteresPalavra;
+		listaLinhasTamPalavras[linhaAtual].listaTamPalavras.push(
+		{
+			numPalavra : numPalavra,
+			numCaracteresPalavra : numCaracteresPalavra
+		});
+		
+		
+		//listaPalabrasDiv.append(newPalavra);
+		arrayDivPalabras[numPalavra] = newPalavra;
+	});
+	
+	listaLinhasTamPalavras.forEach(function (linhaTamanhos, index) {
+		var linha = linhaTamanhos.listaTamPalavras;
+		const divLinha = document.createElement('div');
+		divLinha.classList.add("linhaPalabras");
+		linha.forEach(function (palavra, index) {
+	
+			const divPalavra = arrayDivPalabras[palavra.numPalavra];//document.getElementById(`lin${palavra.numPalavra}`);
+			var porcentagem = Math.floor((palavra.numCaracteresPalavra / linhaTamanhos.somaTamanhos) * 100);
+			divPalavra.style.width = `${porcentagem}%`;
+	
+			
+			
+			divLinha.append(divPalavra);
+			
+		});
+		
+		listaPalabrasDiv.append(divLinha);
 	});
 }
 
@@ -761,6 +836,8 @@ function removeBlankLines(text) {
 
 function mostrarRoleta() {
 	var myCanvas = document.getElementById('myCanvas');
+	const ctx = myCanvas.getContext('2d');
+	ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
 	myCanvas.style.display = 'inline';
 	
 	numeroPalavras = listaPalabras.length;

@@ -61,32 +61,51 @@
 				<input type="number" value="10000" id="txtForcaPeteleco" min="0" max="10000" step="1000" style="display:none" />
 				<input type="number" value=".001" id="txtAtrito" min="0" max="1" step=".01" style="display:none" />
 				
-				<canvas id="myCanvas" width="500" height="500" style="display:none">
-				</canvas>
-				
-				
-				<table class="table table-bordered table-hover" id="tabelaPalabras">
-					<thead>
-						<tr>
-							<th>#</th>
-							<th>Palabra</th>
-						</tr>
-					</thead>
-					<tbody id="tabelaPalabrasTBody">
-						<!--
-						<tr>
-							<td>1</td>
-							<td>Palabra</td>
-						</tr>
-						-->
-					</tbody>
-				</table>
-				<form>
-					<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-						<button type="button" class="btn btn-primary"  onclick="mostrarRoleta();">Proximo>></button>
+				<div id="divRoleta">
+					<canvas id="myCanvas" width="500" height="500" style="display:none">
+					</canvas>
+					
+					
+					<div id="listaPalabras">
 					</div>
+				</div>
+				<form>
+					<!-- Button trigger modal -->
+					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+					  Palavra Sorteada
+					</button>
+					
+					<button type="button" class="btn btn-primary" onclick="irParaPagina(1);">
+						Voltar
+					</button>
+
+					<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+						<button type="button" class="btn btn-primary" onclick="mostrarRoleta();">Sortear!</button>
+					</div>
+
 				</form>	
 			</div>
-		</div>	
+		</div>
+		
+		
+
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Palavra Sorteada!</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"/>
+					</div>
+					<div class="modal-body" id="divMensagemPalavraSelecionada" style="font-size: xxx-large">
+						
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Fechar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
 	</body>
 </html>

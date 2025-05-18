@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en"><head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<!-- Bootstrap CSS -->
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+		
+		<link href="index.css" rel="stylesheet">
+		
+		<script src="roleta.js"></script>
+		
+		
+		
+		
+		
+		<title>¡Deletrea!</title>
+	</head>
+	<body>
+		<div class="container">
+			<!-- ¡ => Alt + 0161 ou Alt + 173 -->
+			<h1 class="titulo">¡Deletrea!</h1>
+			
+			<!-- Optional JavaScript; choose one of the two! -->
+			
+			<!-- Option 1: Bootstrap Bundle with Popper -->
+			<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+			
+			<!-- Option 2: Separate Popper and Bootstrap JS -->
+			<!--
+				<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+				<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+			-->
+			
+			
+			
+			
+			
+			<div id="pag1" style="display: none;">
+				<h2 class="titulo-palabras">Palabras</h2>
+				
+				
+				<form>
+					<div class="mb-3">
+						<!-- ¿ => Alt + 0191 ou Alt + 168 -->
+						<label for="palabrasSorteadas" class="form-label">¿Qué palabras serán sorteadas?</label>
+						<textarea class="form-control" id="palabrasSorteadas" rows="8"></textarea>
+					</div>
+
+					<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+						<button type="button" class="btn btn-primary" onclick="irParaPagina(2);">Guardar</button>
+					</div>
+
+				</form>		
+				
+			</div>
+
+			
+			<div id="pag2" style="display: block;">
+				<h2 class="titulo-palabras">Tabela de palabras</h2>
+
+				<input type="number" value="10000" id="txtForcaPeteleco" min="0" max="10000" step="1000" style="display:none">
+				<input type="number" value=".001" id="txtAtrito" min="0" max="1" step=".01" style="display:none">
+				
+				<div id="divRoleta">
+					<canvas id="myCanvas" width="500" height="500" style="display: inline;">
+					</canvas>
+					
+					
+					<div id="listaPalabras">
+						20+28+11+20+20=
+						<div class="linhaPalabras">
+							<div id="lin1" class="itemlista" style="width: 20%; background-color: white;">1 - function</div>
+							<div id="lin2" class="itemlista" style="width: 28%; background-color: white;">2 - mostrarRoleta</div>
+							<div id="lin3" class="itemlista" style="width: 11%; background-color: white;">3 - var</div>
+							<div id="lin4" class="itemlista" style="width: 20%; background-color: white;">4 - myCanvas</div>
+							<div id="lin5" class="itemlista" style="width: 20%; background-color: white;">5 - document</div>
+						</div>
+						30+20+15+18+16=
+						<div class="linhaPalabras">
+							<div id="lin6" class="itemlista" style="width: 30%; background-color: white;">6 - getElementById</div>
+							<div id="lin7" class="itemlista" style="width: 20%; background-color: white;">7 - myCanvas</div>
+							<div id="lin8" class="itemlista" style="width: 15%; background-color: yellow;">8 - style</div>
+							<div id="lin9" class="itemlista" style="width: 18%; background-color: white;">9 - display</div>
+							<div id="lin10" class="itemlista" style="width: 16%; background-color: white;">10 - block</div>
+						</div>
+						
+						<div class="linhaPalabras">
+							<div id="lin11" class="itemlista" style="width: 39%; background-color: white;">11 - numeroPalavras</div>
+							<div id="lin12" class="itemlista" style="width: 37%; background-color: white;">12 - listaPalabras</div>
+							<div id="lin13" class="itemlista" style="width: 22%; background-color: white;">13 - length</div>
+							<div id="lin14" class="itemlista" style="width: 25%; background-color: white;">14 - function</div>
+							<div id="lin15" class="itemlista" style="width: 34%; background-color: white;">15 - mostrarRoleta</div>
+						</div>
+						<div class="linhaPalabras">
+							<div id="lin16" class="itemlista" style="width: 15%; background-color: white;">16 - var</div>
+							<div id="lin17" class="itemlista" style="width: 25%; background-color: white;">17 - myCanvas</div>
+							<div id="lin18" class="itemlista" style="width: 23%; background-color: white;">18 - document</div>
+							<div id="lin19" class="itemlista" style="width: 34%; background-color: white;">19 - getElementById</div>
+							<div id="lin20" class="itemlista" style="width: 23%; background-color: white;">20 - myCanvas</div>
+						</div>
+						<div class="linhaPalabras">						
+							<div id="lin21" class="itemlista" style="width: 18%; background-color: white;">21 - style</div>
+							<div id="lin22" class="itemlista" style="width: 20%; background-color: white;">22 - display</div>
+							<div id="lin23" class="itemlista" style="width: 16%; background-color: white;">23 - block</div>
+							<div id="lin24" class="itemlista" style="width: 32%; background-color: white;">24 - numeroPalavras</div>
+							<div id="lin25" class="itemlista" style="width: 30%; background-color: white;">25 - listaPalabras</div>
+						</div>
+						<div class="linhaPalabras">
+							<div id="lin26" class="itemlista" style="width: 100%; background-color: white;">26 - length</div>
+						</div>
+					</div>
+
+				</div>
+
+				<form>
+					<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+						<button type="button" class="btn btn-primary" onclick="mostrarRoleta();">Proximo&gt;&gt;</button>
+					</div>
+
+				</form>	
+			</div>
+
+		</div>
+	
+	
+</body></html>

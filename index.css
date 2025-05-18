@@ -11,3 +11,35 @@
 #tabelaPalabras {
 	display: inline;
 }
+
+#listaPalabras {
+	display: inline;
+	width: 100%;
+	padding: 0px 5px 5px 5px;
+}
+
+#myCanvas {
+	border: 1px solid blue;
+}
+
+.itemlista {
+	display: inline-block;
+	border: 1px solid blue;
+	padding: 10px;
+	margin: 0px 5px 10px 5px;
+}
+
+#divRoleta {
+	display: inline-flex;
+	width: 100%;
+}
+
+.linhaPalabras {
+	display: flex;
+}
+
+.modal-dialog {
+  width: auto;
+  max-width: none;
+  width: fit-content;
+}
