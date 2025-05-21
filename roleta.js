@@ -479,7 +479,10 @@ function mostrarResultadoSorteio() {
 		texto = texto.split(' - ')[1];
 		var divMensagemPalavraSelecionada = document.getElementById("divMensagemPalavraSelecionada");
 		divMensagemPalavraSelecionada.innerHTML = texto;
-		exampleModal.show();	
+		exampleModal.show();
+		//Evita repetir elementos
+		removeItensFromArray([texto], listaPalabrasJaSorteadas);
+		listaPalabrasJaSorteadas.push(texto);
 	}
 	
 
@@ -731,6 +734,8 @@ var listaPalabras = [];
 
 var numeroSelecionado = null;
 
+var listaPalabrasJaSorteadas = [];
+
 function prepararTabelaDePalabras() {
 	
 	array = [];
@@ -748,6 +753,7 @@ function prepararTabelaDePalabras() {
 	var listaPalabrasStr = removeBlankLines(textAreaPalabras.value.trim());
 	listaPalabras = listaPalabrasStr.split('\n');
 	
+	removeItensFromArray(listaPalabrasJaSorteadas, listaPalabras);
 	
 	var numPalavra = 1;
 	
@@ -822,6 +828,15 @@ function prepararTabelaDePalabras() {
 	});
 }
 
+function removeItensFromArray(itens, array) {
+	itens.forEach(function (item, index) {
+		var index = array.indexOf(item);
+		if (index !== -1) {
+			array.splice(index, 1);
+		}	
+	});
+}
+
 
 //Explanation of the regular expression:
 // ^: Matches the beginning of a line.
@@ -839,6 +854,10 @@ function mostrarRoleta() {
 	var myCanvas = document.getElementById('myCanvas');
 	const ctx = myCanvas.getContext('2d');
 	ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+	myCanvas.style.display = 'none';
+	
+	prepararTabelaDePalabras();
+	
 	myCanvas.style.display = 'inline';
 	
 	numeroPalavras = listaPalabras.length;
