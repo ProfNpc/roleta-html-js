@@ -480,9 +480,13 @@ function mostrarResultadoSorteio() {
 		var divMensagemPalavraSelecionada = document.getElementById("divMensagemPalavraSelecionada");
 		divMensagemPalavraSelecionada.innerHTML = texto;
 		exampleModal.show();
-		//Evita repetir elementos
-		removeItensFromArray([texto], listaPalabrasJaSorteadas);
-		listaPalabrasJaSorteadas.push(texto);
+		
+		var chkRemoverPalabraSorteada = document.getElementById('chkRemoverPalabraSorteada');
+		if (chkRemoverPalabraSorteada.checked) {
+			//Evita repetir elementos
+			removeItensFromArray([texto], listaPalabrasJaSorteadas);
+			listaPalabrasJaSorteadas.push(texto);
+		}
 	}
 	
 
@@ -712,6 +716,7 @@ function irParaPagina(numPagina) {
 	var paginas = document.querySelectorAll('[id^="pag"]');
 	
 	if (numPagina == 2) {
+		listaPalabrasJaSorteadas = [];
 		prepararTabelaDePalabras();
 	}
 	
@@ -876,4 +881,61 @@ function mostrarRoleta() {
 	desenharRoleta();
 	
 	darPeteleco();
+}
+
+var linguas = {
+	"esp": {
+		"titulo": "¡Deletrea!",
+		"titulo-palabras": "Palabra",
+		"titulo-opcoes": "Opciones",
+		"label-opcao-remover-sorteada": "Eliminar palabra al dibujarla",
+		"label-lista-palavras": "¿Qué palabras serán sorteadas?",
+		"label-escolha-a-lingua": "Elija el idioma:",
+		"botao-salvar": "Guardar",
+		"botao-palavra-sorteada": "Palabra sorteada",
+		"botao-voltar": "Volver",
+		"botao-sortear": "Sortear",
+	},
+	"port": {
+		"titulo": "Soletrando!",
+		"titulo-palabras": "Palavra",
+		"titulo-opcoes": "Opcões",
+		"label-opcao-remover-sorteada": "Remover palavra quando sorteada",
+		"label-lista-palavras": "Quais palavras serão sorteadas?",
+		"label-escolha-a-lingua": "Escolha a língua:",
+		"botao-salvar": "Salvar",
+		"botao-palavra-sorteada": "Palavra sorteada",
+		"botao-voltar": "Voltar",
+		"botao-sortear": "Sortear",
+	},
+	"ing": {
+		"titulo": "Spelling!",
+		"titulo-palabras": "Word",
+		"titulo-opcoes": "Options",
+		"label-opcao-remover-sorteada": "Remove word when drawn",
+		"label-lista-palavras": "Which words will be drawn?",
+		"label-escolha-a-lingua": "Choose language:",
+		"botao-salvar": "Save",
+		"botao-palavra-sorteada": "Word drawn",
+		"botao-voltar": "Back",
+		"botao-sortear": "Draw",
+	}
+};
+
+function trocaLingua() {
+	
+	var linguaSelecionada = document.querySelector("input[type='radio'][name=rdLingua]:checked").value;
+
+	var lingua = linguas[linguaSelecionada];
+
+
+	Object.entries(lingua).forEach(function([key, value]) {
+		//const element = document.querySelector(`.${key}`);
+		const elements = document.getElementsByClassName(key);
+		
+		for (var e = 0; e < elements.length; e++) {
+			elements[e].innerHTML = value;
+		}
+
+	});
 }

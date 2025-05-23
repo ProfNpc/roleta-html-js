@@ -47,20 +47,20 @@
 							<h2 class="titulo-palabras">Palabras</h2>
 						</div>
 						<div class="col-6">
-							<h2 class="titulo-palabras">Opções</h2>
+							<h2 class="titulo-opcoes">Opciones</h2>
 						</div>					
 					</div>
 					<div class="row">
 						<div class="col-6">
 							<!-- ¿ => Alt + 0191 ou Alt + 168 -->
-							<label for="palabrasSorteadas" class="form-label">¿Qué palabras serán sorteadas?</label>
+							<label for="palabrasSorteadas" class="form-label label-lista-palavras">¿Qué palabras serán sorteadas?</label>
 							<textarea class="form-control" id="palabrasSorteadas" rows="8"></textarea>
 						</div>
 						<div class="col-6">
 						
-							<label class="form-label">Escolha a língua:</label>
+							<label class="form-label label-escolha-a-lingua">Elija el idioma:</label>
 							<div class="form-check">
-								<input class="form-check-input" type="radio" name="rdLingua" id="rdEsp" checked>
+								<input class="form-check-input" type="radio" name="rdLingua" id="rdEsp" onchange="trocaLingua();" value="esp" checked>
 								
 								<img src="band_esp.png"/>
 								
@@ -69,8 +69,11 @@
 								</label>
 								
 							</div>
+							
+							<br/>
+							
 							<div class="form-check">
-								<input class="form-check-input" type="radio" name="rdLingua" id="rdPort">
+								<input class="form-check-input" type="radio" name="rdLingua" id="rdPort" onchange="trocaLingua();" value="port">
 								
 								<img src="band_port.png"/>
 								
@@ -79,8 +82,11 @@
 								</label>
 								
 							</div>
+							
+							<br/>
+							
 							<div class="form-check">
-								<input class="form-check-input" type="radio" name="rdLingua" id="rdIng">
+								<input class="form-check-input" type="radio" name="rdLingua" id="rdIng" onchange="trocaLingua();" value="ing">
 								
 								<img src="band_ing.png"/>
 								
@@ -89,12 +95,13 @@
 								</label>
 								
 							</div>					
-						
+							
+							<br/>
 						
 							<div class="form-check">
 								<input class="form-check-input" type="checkbox" value="" id="chkRemoverPalabraSorteada" checked>
-								<label class="form-check-label" for="chkRemoverPalabraSorteada">
-									Remover palabra quando sorteada
+								<label class="form-check-label label-opcao-remover-sorteada" for="chkRemoverPalabraSorteada">
+									Eliminar palabra al dibujarla	
 								</label>
 							</div>
 	
@@ -102,7 +109,7 @@
 					</div>
 
 					<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-						<button type="button" class="btn btn-primary" onclick="irParaPagina(2);"/>Guardar</button>
+						<button type="button" class="btn btn-primary botao-salvar" onclick="irParaPagina(2);"/>Guardar</button>
 					</div>
 				</form>		
 				
@@ -124,16 +131,16 @@
 				</div>
 				<form>
 					<!-- Button trigger modal -->
-					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-					  Palavra Sorteada
+					<button type="button" class="btn btn-primary botao-palavra-sorteada" data-bs-toggle="modal" data-bs-target="#exampleModal">
+						Palavra Sorteada
 					</button>
 					
-					<button type="button" class="btn btn-primary" onclick="irParaPagina(1);">
-						Voltar
+					<button type="button" class="btn btn-primary botao-voltar" onclick="irParaPagina(1);">
+						Volver
 					</button>
 
 					<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-						<button type="button" class="btn btn-primary" onclick="mostrarRoleta();">Sortear!</button>
+						<button type="button" class="btn btn-primary botao-sortear" onclick="mostrarRoleta();">Sortear</button>
 					</div>
 
 				</form>	
