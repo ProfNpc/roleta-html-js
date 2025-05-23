@@ -715,6 +715,12 @@ function irParaPagina(numPagina) {
 
 	var paginas = document.querySelectorAll('[id^="pag"]');
 	
+	const tituloTabela = document.querySelector('.titulo-tabela-palabras');
+	tituloTabela.style.display = 'block';
+	
+	const tituloSorteio = document.querySelector('.titulo-sorteio');
+	tituloSorteio.style.display = 'none';
+	
 	if (numPagina == 2) {
 		listaPalabrasJaSorteadas = [];
 		prepararTabelaDePalabras();
@@ -856,6 +862,13 @@ function removeBlankLines(text) {
 }
 
 function mostrarRoleta() {
+	
+	const tituloTabela = document.querySelector(`.titulo-tabela-palabras`);
+	tituloTabela.style.display = 'none';
+	
+	const tituloSorteio = document.querySelector('.titulo-sorteio');
+	tituloSorteio.style.display = 'block';
+	
 	var myCanvas = document.getElementById('myCanvas');
 	const ctx = myCanvas.getContext('2d');
 	ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
@@ -892,6 +905,8 @@ var linguas = {
 		"label-lista-palavras": "¿Qué palabras serán sorteadas?",
 		"label-escolha-a-lingua": "Elija el idioma:",
 		"botao-salvar": "Guardar",
+		"titulo-tabela-palabras": "Tabla de palabras",
+		"titulo-sorteio": "Sorteo",
 		"botao-palavra-sorteada": "Palabra sorteada",
 		"botao-voltar": "Volver",
 		"botao-sortear": "Sortear",
@@ -904,6 +919,8 @@ var linguas = {
 		"label-lista-palavras": "Quais palavras serão sorteadas?",
 		"label-escolha-a-lingua": "Escolha a língua:",
 		"botao-salvar": "Salvar",
+		"titulo-tabela-palabras": "Tabela de palavras",
+		"titulo-sorteio": "Sorteio",
 		"botao-palavra-sorteada": "Palavra sorteada",
 		"botao-voltar": "Voltar",
 		"botao-sortear": "Sortear",
@@ -916,6 +933,8 @@ var linguas = {
 		"label-lista-palavras": "Which words will be drawn?",
 		"label-escolha-a-lingua": "Choose language:",
 		"botao-salvar": "Save",
+		"titulo-tabela-palabras": "Word table",
+		"titulo-sorteio": "Draw",
 		"botao-palavra-sorteada": "Word drawn",
 		"botao-voltar": "Back",
 		"botao-sortear": "Draw",

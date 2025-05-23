@@ -39,7 +39,12 @@
 }
 
 .modal-dialog {
-  width: auto;
-  max-width: none;
-  width: fit-content;
+	width: auto;
+	max-width: none;
+	width: fit-content;
+}
+
+.titulo-sorteio {
+	display: none;
+	text-align: center;
 }
